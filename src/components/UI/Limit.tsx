@@ -8,12 +8,12 @@ export const Limit = () => {
       <div className="order-type-container">price(USDC)</div>
       <Button />
       <div className="order-type-container">Amount(CC)</div>
-      <Button />
+      <Button field="amount" />
       <LeverageSlider />
       <div className="order-type-container">Take profit(USDC)</div>
-      <Button />
+      <Button initialValue="Optional" />
       <div className="order-type-container">Stop Loss(USDC)</div>
-      <Button />
+      <Button initialValue="Optional" />
       <BuySellButtons />
     </div>
   );

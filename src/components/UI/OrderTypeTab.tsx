@@ -1,10 +1,10 @@
-import { useState } from "react";
 import { Limit } from "./Limit";
 import { Market } from "./Market";
 import { Stop } from "./Stop";
+import { useTrade } from "../../Context/TradeContext";
 
 const OrderTypeTabs = () => {
-  const [activeTab, setActiveTab] = useState("Limit");
+  const { activeTab, setActiveTab } = useTrade();
 
   return (
     <div className="order-tabs-container">

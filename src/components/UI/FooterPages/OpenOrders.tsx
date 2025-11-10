@@ -1,7 +1,13 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import { useTrade } from "../../../Context/TradeContext";
+import { OpenHistory } from "./OrderHistory";
 
 export const OpenOrders = () => {
-  const [orders, setOrders] = useState([
+  const { tradeData, tradeSide, tradeExcuted, setTradeExecuted } = useTrade(); // ✅ combined into single destructure
+  const effectRan = useRef(false);
+  const { activeTab } = useTrade();
+
+  const [orders, setOrders] = useState<any[]>([
     {
       id: 1,
       pair: "CC-USDC",
@@ -24,9 +30,42 @@ export const OpenOrders = () => {
     },
   ]);
 
-  // Handle cancel button
-  const handleClose = (id: any) => {
-    setOrders((prev) => prev.filter((pos) => pos.id !== id));
+  useEffect(() => {
+    if (!effectRan.current) {
+      effectRan.current = true;
+      return;
+    }
+    effectRan.current = false;
+
+    if ((tradeData.price || tradeData.amount) && activeTab == "Limit") {
+      const newOrder = {
+        id: orders.length + 1,
+        pair: "CC-USDC",
+        type: "Limit",
+        side: tradeSide === "Buy" ? "Long" : "Short",
+        price: `${tradeData.price}`,
+        amount: Number(tradeData.amount || 0),
+        filled: "0%",
+        time: new Date().toLocaleTimeString(),
+      };
+
+      setOrders((prev) => [...prev, newOrder]);
+      console.log(" New Order Added:", newOrder);
+
+      setTimeout(() => {
+        <OpenHistory />;
+        setOrders((prev) => prev.filter((o) => o.id !== newOrder.id));
+        console.log("Order Deleted:", newOrder.id);
+      }, 4000);
+
+      // Reset execution flag
+      setTradeExecuted && setTradeExecuted(false);
+    }
+  }, [tradeExcuted]);
+
+  // ✅ Handle Close Button
+  const handleClose = (id: number) => {
+    setOrders((prev) => prev.filter((order) => order.id !== id));
   };
 
   if (orders.length === 0) {

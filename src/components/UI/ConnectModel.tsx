@@ -1,5 +1,8 @@
 import React from "react";
 import { X } from "lucide-react";
+import Logo from "../../assets/Logo.png";
+import Zoro from "../../assets/Zoro Logo.png";
+import ZoroLogo from "../../assets/Zoro Logo 1.png";
 
 interface ConnectModalProps {
   isOpen: boolean;
@@ -13,7 +16,6 @@ const ConnectModel: React.FC<ConnectModalProps> = ({ isOpen, onClose }) => {
     onClose();
   };
 
-  // ✅ Use React.MouseEvent (not imported)
   const handleContentClick = (e: any) => {
     e.stopPropagation();
   };
@@ -27,16 +29,17 @@ const ConnectModel: React.FC<ConnectModalProps> = ({ isOpen, onClose }) => {
         </div>
 
         <div className="connect-options">
-          <button className="connect-option">📧 Log in with Email</button>
+          <button className="connect-option">
+            <img src={Logo} alt="cypherock" className="vijay" />
+          </button>
 
-          <div className="or-divider">
-            <span>OR</span>
-          </div>
-
-          <button className="connect-option">💼 Default Wallet</button>
-          <button className="connect-option">🌐 WalletConnect</button>
+          <button className="connect-option">
+            <img src={ZoroLogo} alt="Zorologo" className="vijay2" />
+            <img src={Zoro} alt="cypherock" className="vijay3" />
+          </button>
+          {/* <button className="connect-option"> WalletConnect</button>
           <button className="connect-option">⬛ OKX Wallet</button>
-          <button className="connect-option">🔵 Coinbase Wallet</button>
+          <button className="connect-option">🔵 Coinbase Wallet</button> */}
         </div>
       </div>
     </div>

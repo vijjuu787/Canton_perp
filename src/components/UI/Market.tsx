@@ -6,7 +6,7 @@ export const Market = () => {
   return (
     <div className="panel-content">
       <div className="order-type-container">Amount(CC)</div>
-      <Button />
+      <Button field="amount" />
       <LeverageSlider />
       <div className="order-type-container">Take profit(USDC)</div>
       <Button />

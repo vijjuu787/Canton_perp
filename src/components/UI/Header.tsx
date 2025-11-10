@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
 import ConnectModal from "./ConnectModel";
+import { Logo } from "../../theme/Logo";
 
 const Header: React.FC = () => {
   const [open, setOpen] = useState<boolean>(false);
@@ -23,11 +24,7 @@ const Header: React.FC = () => {
     <header className="header">
       {/* Left Section */}
       <div className="logo-section">
-        <img
-          src="https://hyperliquid.xyz/static/media/logo_white.65b25521.svg"
-          alt="logo"
-          className="logo"
-        />
+        <Logo />
         <span className="brand">Canton Perp</span>
         <span className="italic">CC USDC-perp</span>
       </div>

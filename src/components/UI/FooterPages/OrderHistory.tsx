@@ -1,8 +1,13 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import { useTrade } from "../../../Context/TradeContext"; // ✅ make sure path is correct
 
 export const OpenHistory = () => {
+  const { tradeData, tradeSide, tradeExcuted, setTradeExecuted } = useTrade();
+  const { activeTab } = useTrade();
+  const effectRan = useRef(false);
+
   // ✅ Orders history data
-  const [orders] = useState([
+  const [orders, setOrders] = useState([
     {
       id: 1,
       pair: "CC-USDC",
@@ -35,10 +40,35 @@ export const OpenHistory = () => {
     },
   ]);
 
+  // ✅ Effect to add new history entry when trade executes
+  useEffect(() => {
+    if (effectRan.current) {
+      effectRan.current = false;
+      return;
+    }
+    effectRan.current = true;
+
+    const newOrder = {
+      id: orders.length + 1,
+      pair: "CC-USDC",
+      type: activeTab,
+      side: tradeSide === "Buy" ? "Long" : "Short",
+      price: activeTab === "Market" ? "$100" : `$${tradeData.price}`,
+      amount: Number(tradeData.amount || 0),
+      status: "Filled",
+      time: new Date().toLocaleString(),
+    };
+
+    setOrders((prev) => [...prev, newOrder]);
+    console.log("✅ New Order Added to History:", newOrder);
+  }, []);
+
+  // ✅ If no orders
   if (orders.length === 0) {
     return <div className="placeholder">No History data</div>;
   }
 
+  // ✅ Render Table
   return (
     <table className="positions-table">
       <thead>
@@ -72,7 +102,11 @@ export const OpenHistory = () => {
             <td>
               <span
                 className={`side-badge ${
-                  order.side === "Long" ? "long" : "short"
+                  order.status === "Filled"
+                    ? "filled"
+                    : order.status === "Cancelled"
+                    ? "cancelled"
+                    : "pending"
                 }`}
               >
                 {order.status}
